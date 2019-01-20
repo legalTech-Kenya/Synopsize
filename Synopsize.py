@@ -20,7 +20,7 @@ toaster = ToastNotifier()
 print("Synopsize [Version 1.0] | © 2019 | All rights reserved. ")
 def main():
     print("\n")
-    type_=input("What do you want to Synopsize?\n\n1. A bunch of text.\n2. A PDF Document.\n\nType: ")
+    type_=input("What do you want to Synopsize?\n\n1. A bunch of text.\n2. Word Document.\n3. PDF.\n\nType: ")
     print("\n")
     if type_=="1" or type_=="A bunch of text".lower():
         type_1=input("Just one more thing, are you:\n\n1. Pasting a block of text or,\n2. Pasting a txt file?\n\nAnswer: ")
@@ -91,7 +91,7 @@ def main():
             if __name__ == "__main__":
                 main()
             
-    elif type_=="2" or type_=="A PDF Document".lower():
+    if type_=="3" or type_=="A PDF Document".lower():
         doc=input("NOTE\n1. Please ensure Synopsize is in the same directory as the PDF.\n2. Enter the document name in this format 'doc.pdf'.\n3. Ensure document is readable (i.e in OCR format) and the document name has .pdf at the end otherwise I will abruptly close, and I'll leave you very angry :)** -  ")
         list=textwrap3.wrap(doc, width=95)
         for element in list:
@@ -158,6 +158,45 @@ def main():
                                     " ",
                                     icon_path="cap.ico",
                                     duration=5)
+                
+    if type_=="2":
+        print("NOTE\n1. Please ensure Synopsize is in the same directory as the Word document.\n2. Ensure document is in .docx format otherwise I will abruptly close, leaving you angry :) ")
+        print("\n")
+        doc1=input("Enter the document name in this format 'test.doc' ")
+        print("\n")
+        print("About to summarize", doc1, "...")
+        print("\n")
+        import readDocx
+        text_string=readDocx.getText(doc1)
+        conversion=input("Stage one complete. Proceed to summary? [y/n] ")
+        print("\n")
+        if conversion=="y":
+            ratio=input("How lengthy of a summary do you want?\n1. 20% of document\n2. 50% of document.\n\nSummary level: ?  ")
+            if ratio=="1" or ratio=="20%" or ratio =="20":
+                print("\n")
+                print ('Summary:')
+                print (summarize(text_string, ratio=0.2))
+                import docx
+                doc = docx.Document()
+                doc.add_paragraph(summarize(text_string, ratio=0.2))
+                doc.save('Synopsize20.docx')
+                toaster.show_toast("Synopsis saved.",
+                                    " ",
+                                    icon_path="cap.ico",
+                                    duration=5)
+                main()
+            if ratio=="2" or ratio=="50%" or ratio =="50":
+                print("\n")
+                print ('Summary:')
+                print (summarize(text_string, ratio=0.5))
+                import docx
+                doc = docx.Document()
+                doc.add_paragraph(summarize(text_string, ratio=0.2))
+                doc.save('Synopsize500.docx')
+                toaster.show_toast("Synopsis saved.",
+                                    " ",
+                                    icon_path="cap.ico",
+                                    duration=5)
                 if __name__ == "__main__":
                     main()
             if __name__ == "__main__":
@@ -168,10 +207,3 @@ def main():
         main()
 if __name__ == "__main__":
     main()
-##        time.sleep(3)
-##        print("\n")
-##        input("Press Enter to exit Summarizer: ")
-##        print("To synopsize document again, just start application again. ")
-##        time.sleep(3)
-##        sys.exit()
- 
